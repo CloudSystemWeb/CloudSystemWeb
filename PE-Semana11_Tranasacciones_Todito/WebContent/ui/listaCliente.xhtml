@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../templates/uiConMenu.xhtml">
+	<ui:define name="content">
+
+	
+		<h:form>
+			<p:dataTable var="aux"
+							 value="#{clienteAction.listaCliente}"
+							 binding="#{clienteAction.dttClientes}">
+							 
+					<f:facet name="header">Lista Clientes</f:facet>
+					
+					<p:column headerText="id">
+						<h:outputText value="#{aux.idcliente}"/>
+					</p:column>
+					<p:column headerText="Nombre">
+						<h:outputText value="#{aux.nombre}"/>
+					</p:column>
+					<p:column headerText="Apellido">
+						<h:outputText value="#{aux.apellido}"/>
+					</p:column>
+					<p:column headerText="Correo">
+						<h:outputText value="#{aux.correo}"/>
+					</p:column>				
+					<p:column headerText="-">
+						<h:commandButton id="id1"
+								 	     actionListener="#{clienteAction.eliminaCliente}"
+								 		 image="/images/icons/eliminar.ico"/>
+					</p:column>
+		
+				  	<p:column style="width:32px;text-align: center">
+					  	<p:graphicImage value="/#{aux.imagen}" height="96" width="96" />
+				  	</p:column> 
+       			 
+       			 
+				</p:dataTable>		
+				
+		</h:form>
+		
+		
+		
+	</ui:define>
+</ui:composition>
+

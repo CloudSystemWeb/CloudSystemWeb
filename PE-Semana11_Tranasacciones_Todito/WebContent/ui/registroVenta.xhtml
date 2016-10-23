@@ -1,0 +1,87 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../templates/uiConMenu.xhtml">
+	<ui:define name="content">
+
+		<h:form>
+			
+			<p:messages id="msgs"/>  
+
+			<h:panelGrid columns="2" styleClass="alineacionColumna" >				
+			    <f:facet name="header">  
+			          REGISTRO DE BOLETA DE VENTA <br/><br/>
+			    </f:facet>
+				
+				<h:outputText value="CLIENTE" /> 
+			  	<p:selectOneMenu  value="#{ventaAction.idCliente}"
+			  					  style="width:150px;" required="true"
+			  					  requiredMessage="Cliente es oblogatorio">  
+	                <f:selectItem itemLabel="Seleccione" itemValue="" />  
+	                <f:selectItems value="#{ventaAction.clientes}" var ="x" 
+	                			   itemValue="#{x.idcliente}" itemLabel="#{x.nombre} #{x.apellido}"  />  
+	            </p:selectOneMenu>
+	              
+		        <h:outputText value="PRODUCTOS" />  
+		        <p:selectOneMenu value="#{ventaAction.idProducto}" 
+		        				  style="width:150px;" required="true"
+		        				   requiredMessage="Producto es oblogatorio">  
+		        	<f:selectItem itemLabel="Seleccione" itemValue="" />  
+	                <f:selectItems value="#{ventaAction.productos}" var="prod"
+	                			   itemValue="#{prod.idproducto}" itemLabel="#{prod.nombre}"  />  
+		        </p:selectOneMenu> 
+		        
+		        <h:outputText value="CANTIDAD" />
+				<p:inputText   value="#{ventaAction.cantidad}"  required="true" requiredMessage="Cantidad es oblogatorio"/>
+				
+			</h:panelGrid>
+			
+			<h:panelGrid columns="5" styleClass="alineacionColumna" >
+				
+	           		<p:commandButton value="Agrega" ajax="false" action="#{ventaAction.agregaVenta}" />
+	 				<p:commandButton value="Actualiza" ajax="false" action="#{ventaAction.actualizaVenta}" />	
+					<p:commandButton value="Limpiar" ajax="false" action="#{ventaAction.limpiaVenta}" />
+					<p:commandButton value="Registra" ajax="false" action="#{ventaAction.registraVenta}" />
+			
+			</h:panelGrid>			
+
+			<h:panelGrid columns="1" >
+					<p:dataTable var="x" value="#{sessionScope.boleta}"
+										 binding="#{ventaAction.dttVentas}">
+						<p:column headerText="ID PRODUCTO">
+							<h:outputText value="#{x.idProducto}"/>	
+						</p:column>
+						<p:column headerText="NOMBRE">
+							<h:outputText value="#{x.nombre}"/>	
+						</p:column>					
+						<p:column headerText="CANTIDAD">
+							<h:outputText value="#{x.cantidad}"/>	
+						</p:column>		
+						<p:column headerText="PRECIO">
+							<h:outputText value="#{x.precio}"/>	
+						</p:column>		
+						<p:column headerText="-">
+						<h:commandButton id="id"
+								 actionListener="#{ventaAction.eliminaVenta}"
+								 image="/images/icons/eliminar.ico"/>
+						</p:column>
+						
+						<p:columnGroup type="footer">
+	            			<p:row>
+				                <p:column colspan="3" style="text-align:right" 
+				                		footerText="Total a pagar " />
+				                <p:column footerText="#{ventaAction.montoTotal}" />
+				                <p:column colspan="1" />   
+				            </p:row>
+			     		</p:columnGroup>
+        		
+					</p:dataTable>
+			</h:panelGrid>
+
+				
+		</h:form>
+		
+	</ui:define>
+</ui:composition>

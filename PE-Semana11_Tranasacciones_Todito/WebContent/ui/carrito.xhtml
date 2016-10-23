@@ -1,0 +1,134 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../templates/uiConMenu.xhtml">
+	<ui:define name="content">
+
+  		
+  
+		<script type="text/javascript">
+		    function handleDrop(event, ui) {
+		        var droppedCar = ui.draggable;
+		        droppedCar.fadeOut('fast');
+		    }
+		</script>
+
+		<h:form>
+		<p:fieldset id="idCatalogo" legend="Catalogo de Productos">
+			<p:dataTable var="aux"
+						 value="#{carritoAction.catalogo}"
+						 binding="#{carritoAction.dttProductos}"
+						 id="idTabCatalogo" >
+							 
+					<f:facet name="header">
+						Catalogo de Producto
+					</f:facet>
+					
+					<p:column style="width:20px">
+						<h:outputText id="draggIcon" styleClass="ui-icon ui-icon-arrow-4"/>  
+						<p:draggable for="draggIcon" revert="true" helper="clone"/>
+					</p:column>
+					
+					<p:column headerText="id">
+						<h:outputText value="#{aux.idproducto}"/>
+					</p:column>
+					<p:column headerText="Nombre">
+						<h:outputText value="#{aux.nombre}"/>
+					</p:column>
+					<p:column headerText="Marca">
+						<h:outputText value="#{aux.marca}"/>
+					</p:column>
+					<p:column headerText="Categoria">
+						<h:outputText value="#{aux.categoria.descripcion}"/>
+					</p:column>		
+							
+							
+				
+				</p:dataTable>	
+		</p:fieldset>		
+
+		<p:fieldset id="idCarrito" 
+					legend="Carrito de Compras" 
+					style="margin-top:20px">
+				
+				<p:outputPanel id="idPanelCarrito">
+						<p:growl id="growl" life="2000" />
+				
+						<h:outputText value="Seleccione del Catalogo"
+									  rendered="#{empty carritoAction.carrito}"
+									  style="font-size:15px"/> 
+						
+						<p:dataTable var="aux" 
+									 value="#{carritoAction.carrito}"
+									 id="idTabCarrito"	
+									 rendered="#{not empty carritoAction.carrito}"
+									 binding="#{carritoAction.dttCarrito}">
+						
+							<p:column headerText="id">
+								<h:outputText value="#{aux.idproducto}"/>
+							</p:column>
+							<p:column headerText="Nombre">
+								<h:outputText value="#{aux.nombre}"/>
+							</p:column>
+							<p:column headerText="Marca">
+								<h:outputText value="#{aux.marca}"/>
+							</p:column>
+							<p:column headerText="Categoria">
+								<h:outputText value="#{aux.categoria.descripcion}"/>
+							</p:column>	
+							<p:column headerText="Cantidad">
+								<h:inputText value="#{aux.cantidad}"/>
+							</p:column>
+							<p:column headerText="Precio">
+								<h:outputText value="#{aux.precio}"/>
+							</p:column>
+							<p:column headerText="-">
+								<h:commandButton id="id1"
+										 actionListener="#{carritoAction.eliminaProducto}"
+										 image="/images/icons/eliminar.ico" 
+										 />
+							</p:column>
+							<p:column headerText="-">
+								<h:commandButton id="id2"
+										 actionListener="#{carritoAction.actualizaProducto}"
+										 image="/images/icons/editar.ico" 
+										 />
+							</p:column>
+							<p:columnGroup type="footer">
+	            			<p:row>
+				                <p:column colspan="4" style="text-align:right" 
+				                		footerText="Total a pagar " />
+				                <p:column footerText="#{carritoAction.montoTotal}" colspan="2"/>
+				                <p:column colspan="1"  />   
+				            </p:row>
+				            
+			     		</p:columnGroup>
+			     		
+						</p:dataTable>
+				</p:outputPanel>
+		</p:fieldset>	
+
+		<!-- 
+				datasource="idTabCatalogo": Tabla del catalogo
+				for="idCarrito" :fieldSet del carrito
+				
+				listener="#{carrito.agregarCarrito}: metodo que se ejecuta en el arrastre
+				
+				update="idPanelCarrito": Que panel o tabla quieres que se vuelva actualizar
+		 -->
+		 
+		<p:droppable datasource="idTabCatalogo" 
+					 for="idCarrito"
+					 tolerance="touch" 
+					 activeStyleClass="ui-state-highlight" onDrop="handleDrop">
+			<p:ajax listener="#{carritoAction.agregarCarrito}" 
+					update="idPanelCarrito"/>
+		</p:droppable>
+							
+		</h:form>
+		
+	</ui:define>
+</ui:composition>
+

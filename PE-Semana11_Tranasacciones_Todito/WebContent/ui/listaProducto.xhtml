@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../templates/uiConMenu.xhtml">
+	<ui:define name="content">
+
+	
+		<h:form>
+			<p:dataTable var="aux"
+							 value="#{productoAction.listaProducto}"
+							 binding="#{productoAction.dttProductos}">
+							 
+					<f:facet name="header">
+						Lista Productos
+					</f:facet>
+					
+					<p:column headerText="id">
+						<h:outputText value="#{aux.idproducto}"/>
+					</p:column>
+					<p:column headerText="Nombre">
+						<h:outputText value="#{aux.nombre}"/>
+					</p:column>
+					<p:column headerText="Marca">
+						<h:outputText value="#{aux.marca}"/>
+					</p:column>
+					<p:column headerText="Categoria">
+						<h:outputText value="#{aux.categoria.descripcion}"/>
+					</p:column>				
+					<p:column headerText="-">
+						<h:commandButton id="id1"
+								 actionListener="#{productoAction.eliminaProducto}"
+								 image="/images/icons/eliminar.ico"/>
+					</p:column>
+					<p:column headerText="-">
+						<p:commandLink id="id2"
+								 action="#{productoAction.buscaProducto}"
+								 ajax="false" >
+								<h:graphicImage  value="/images/icons/editar.ico"/> 
+						 </p:commandLink>
+					</p:column>				
+				
+				</p:dataTable>		
+		</h:form>
+		
+	</ui:define>
+</ui:composition>
+
